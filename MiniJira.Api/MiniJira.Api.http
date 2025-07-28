@@ -1,0 +1,6 @@
+@MiniJira.Api_HostAddress = http://localhost:5074
+
+GET {{MiniJira.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
