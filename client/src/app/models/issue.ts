@@ -1,5 +1,5 @@
 export interface Issue {
-  id: number;
+  id?: number;
   title: string;
   description: string;
   status: 'Open' | 'In Progress' | 'Closed';

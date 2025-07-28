@@ -9,7 +9,10 @@
         "@schematics/angular:component": {
           "inlineTemplate": true,
           "inlineStyle": true,
-          "style": "scss",
+          "styles": [
+            "node_modules/bulma/css/bulma.css",
+            "src/styles.scss"
+          ],
           "skipTests": true
         },
         "@schematics/angular:class": {

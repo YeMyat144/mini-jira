@@ -1,6 +1,115 @@
 @MiniJira.Api_HostAddress = http://localhost:5074
+@MiniJira.Api_Url = @MiniJira.Api_HostAddress + "/api"
 
-GET {{MiniJira.Api_HostAddress}}/weatherforecast/
-Accept: application/json
+### Variables
+@ContentType = application/json
+
+### Get all issues
+GET {{MiniJira.Api_Url}}/issues
+Accept: {{ContentType}}
 
 ###
+
+### Get issue by ID
+GET {{MiniJira.Api_Url}}/issues/1
+Accept: {{ContentType}}
+
+###
+
+### Create a new issue
+POST {{MiniJira.Api_Url}}/issues
+Content-Type: {{ContentType}}
+
+{
+  "title": "Fix login bug",
+  "description": "Users are unable to log in with their credentials",
+  "status": "Open",
+  "priority": "High",
+  "project": "MiniJira",
+  "assignee": "John Doe"
+}
+
+###
+
+### Create another issue
+POST {{MiniJira.Api_Url}}/issues
+Content-Type: {{ContentType}}
+
+{
+  "title": "Add dark mode",
+  "description": "Implement dark mode theme for better user experience",
+  "status": "In Progress",
+  "priority": "Medium",
+  "project": "MiniJira",
+  "assignee": "Jane Smith"
+}
+
+###
+
+### Update an issue
+PUT {{MiniJira.Api_Url}}/issues/1
+Content-Type: {{ContentType}}
+
+{
+  "id": 1,
+  "title": "Fix login bug - Updated",
+  "description": "Users are unable to log in with their credentials. Need to investigate authentication flow.",
+  "status": "In Progress",
+  "priority": "High",
+  "project": "MiniJira",
+  "assignee": "John Doe"
+}
+
+###
+
+### Update issue status
+PUT {{MiniJira.Api_Url}}/issues/2
+Content-Type: {{ContentType}}
+
+{
+  "id": 2,
+  "title": "Add dark mode",
+  "description": "Implement dark mode theme for better user experience",
+  "status": "Closed",
+  "priority": "Medium",
+  "project": "MiniJira",
+  "assignee": "Jane Smith"
+}
+
+###
+
+### Delete an issue
+DELETE {{MiniJira.Api_Url}}/issues/1
+
+###
+
+### Get all issues after deletion
+GET {{MiniJira.Api_Url}}/issues
+Accept: {{ContentType}}
+
+###
+
+### Test with invalid ID (should return 404)
+GET {{MiniJira.Api_Url}}/issues/999
+Accept: {{ContentType}}
+
+###
+
+### Test update with invalid ID (should return 400)
+PUT {{MiniJira.Api_Url}}/issues/1
+Content-Type: {{ContentType}}
+
+{
+  "id": 2,
+  "title": "Mismatched ID test",
+  "description": "This should fail",
+  "status": "Open",
+  "priority": "Low",
+  "project": "Test",
+  "assignee": "Test User"
+}
+
+###
+
+### Test delete with invalid ID (should return 404)
+DELETE {{MiniJira.Api_Url}}/issues/999

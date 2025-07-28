@@ -38,24 +38,54 @@ namespace MiniJira.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<Issue>> CreateIssue(Issue issue)
         {
-            _context.Issues.Add(issue);
-            await _context.SaveChangesAsync();
+            try
+            {
+                // Ensure Id is not set for new issues
+                issue.Id = 0;
+                
+                // Validate required fields
+                if (string.IsNullOrWhiteSpace(issue.Title))
+                {
+                    return BadRequest("Title is required");
+                }
 
-            return CreatedAtAction(nameof(GetIssue), new { id = issue.Id }, issue);
+                _context.Issues.Add(issue);
+                await _context.SaveChangesAsync();
+
+                return CreatedAtAction(nameof(GetIssue), new { id = issue.Id }, issue);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
 
         // PUT: api/issues/5
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateIssue(int id, Issue issue)
         {
-            if (id != issue.Id)
-                return BadRequest();
-
-            _context.Entry(issue).State = EntityState.Modified;
-
             try
             {
+                var existingIssue = await _context.Issues.FindAsync(id);
+                if (existingIssue == null)
+                    return NotFound();
+
+                // Validate required fields
+                if (string.IsNullOrWhiteSpace(issue.Title))
+                {
+                    return BadRequest("Title is required");
+                }
+
+                // Update properties
+                existingIssue.Title = issue.Title;
+                existingIssue.Description = issue.Description;
+                existingIssue.Status = issue.Status;
+                existingIssue.Priority = issue.Priority;
+                existingIssue.Project = issue.Project;
+                existingIssue.Assignee = issue.Assignee;
+
                 await _context.SaveChangesAsync();
+                return NoContent();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -64,8 +94,10 @@ namespace MiniJira.Api.Controllers
                 else
                     throw;
             }
-
-            return NoContent();
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
 
         // DELETE: api/issues/5
