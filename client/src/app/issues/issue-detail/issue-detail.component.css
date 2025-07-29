@@ -1,0 +1,68 @@
+.issue-key {
+  color: #6c757d;
+  font-weight: 500;
+  font-size: 1.25rem;
+}
+
+.card {
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  margin-bottom: 1.5rem;
+}
+
+.card-header {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.comments-list {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.comment-item {
+  padding: 1rem;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.comment-item:last-child {
+  border-bottom: none;
+}
+
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.comment-content {
+  white-space: pre-line;
+}
+
+/* Priority colors */
+.text-high, .text-danger {
+  color: #dc3545 !important;
+}
+
+.text-medium, .text-warning {
+  color: #ffc107 !important;
+}
+
+.text-low, .text-info {
+  color: #0dcaf0 !important;
+}
+
+/* Badge styles */
+.badge.text-danger {
+  background-color: #f8d7da;
+  color: #842029 !important;
+}
+
+.badge.text-warning {
+  background-color: #fff3cd;
+  color: #664d03 !important;
+}
+
+.badge.text-info {
+  background-color: #cff4fc;
+  color: #055160 !important;
+}

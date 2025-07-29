@@ -1,0 +1,88 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Projects</h2>
+    <button class="btn btn-primary" (click)="openCreateForm()">
+      <i class="bi bi-plus-circle me-1"></i> New Project
+    </button>
+  </div>
+
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+    <button type="button" class="btn-close float-end" (click)="errorMessage = ''"></button>
+  </div>
+
+  <div *ngIf="showForm" class="card mb-4">
+    <div class="card-header">
+      <h5>{{ isEditing ? 'Edit' : 'Create' }} Project</h5>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="projectForm" (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <label for="name" class="form-label">Project Name</label>
+          <input type="text" class="form-control" id="name" formControlName="name">
+          <div *ngIf="projectForm.get('name')?.invalid && projectForm.get('name')?.touched" class="text-danger">
+            Project name is required
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="key" class="form-label">Project Key</label>
+          <input type="text" class="form-control" id="key" formControlName="key" placeholder="e.g. PROJ">
+          <div *ngIf="projectForm.get('key')?.invalid && projectForm.get('key')?.touched" class="text-danger">
+            <span *ngIf="projectForm.get('key')?.errors?.['required']">Project key is required</span>
+            <span *ngIf="projectForm.get('key')?.errors?.['pattern']">Project key must be 2-10 uppercase letters or numbers</span>
+          </div>
+          <small class="form-text text-muted">A short, unique identifier for this project (2-10 uppercase letters or numbers)</small>
+        </div>
+
+        <div class="mb-3">
+          <label for="description" class="form-label">Description</label>
+          <textarea class="form-control" id="description" formControlName="description" rows="3"></textarea>
+        </div>
+
+        <div class="d-flex justify-content-end gap-2">
+          <button type="button" class="btn btn-secondary" (click)="cancelForm()">Cancel</button>
+          <button type="submit" class="btn btn-primary" [disabled]="projectForm.invalid || isLoading">
+            <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+            {{ isEditing ? 'Update' : 'Create' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div *ngIf="isLoading && !projects.length" class="d-flex justify-content-center my-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <div *ngIf="!isLoading && !projects.length" class="alert alert-info">
+    No projects found. Create your first project to get started.
+  </div>
+
+  <div class="row">
+    <div *ngFor="let project of projects" class="col-md-6 col-lg-4 mb-4">
+      <div class="card h-100">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">{{ project.name }}</h5>
+          <span class="badge bg-secondary">{{ project.key }}</span>
+        </div>
+        <div class="card-body">
+          <p class="card-text">{{ project.description || 'No description provided' }}</p>
+        </div>
+        <div class="card-footer d-flex justify-content-end gap-2">
+          <button class="btn btn-sm btn-outline-primary" [routerLink]="['/projects', project.id]">
+            <i class="bi bi-eye me-1"></i> View
+          </button>
+          <button class="btn btn-sm btn-outline-secondary" (click)="openEditForm(project)">
+            <i class="bi bi-pencil me-1"></i> Edit
+          </button>
+          <button class="btn btn-sm btn-outline-danger" (click)="deleteProject(project.id)">
+            <i class="bi bi-trash me-1"></i> Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
