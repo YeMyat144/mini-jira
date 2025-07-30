@@ -18,7 +18,6 @@ interface KanbanColumn {
 @Component({
   selector: 'app-kanban-board',
   templateUrl: './kanban-board.component.html',
-  styleUrls: ['./kanban-board.component.css'],
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule, DragDropModule]
 })

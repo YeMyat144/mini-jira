@@ -1,0 +1,61 @@
+<nav class="navbar is-primary" role="navigation" aria-label="main navigation">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-item" routerLink="/">
+                <span class="has-text-weight-bold is-size-5">MiniJira</span>
+            </a>
+
+            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" (click)="toggleMenu()">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+
+        <div class="navbar-menu" [class.is-active]="isMenuActive">
+            <div class="navbar-start">
+                <a class="navbar-item is-hoverable" routerLink="/issues" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: false}">
+                    <span class="icon-text">
+                        <span class="icon">
+                            <i class="fas fa-bug"></i>
+                        </span>
+                        <span>Issues</span>
+                    </span>
+                </a>
+
+                <a class="navbar-item is-hoverable" routerLink="/kanban" routerLinkActive="is-active">
+                    <span class="icon-text">
+                        <span class="icon">
+                            <i class="fas fa-columns"></i>
+                        </span>
+                        <span>Kanban Board</span>
+                    </span>
+                </a>
+
+                <a class="navbar-item is-hoverable" routerLink="/projects" routerLinkActive="is-active">
+                    <span class="icon-text">
+                        <span class="icon">
+                            <i class="fas fa-project-diagram"></i>
+                        </span>
+                        <span>Projects</span>
+                    </span>
+                </a>
+            </div>
+
+            <!-- <div class="navbar-end">
+                <div class="navbar-item">
+                    <div class="buttons">
+                        <a class="button is-light is-outlined" routerLink="/issues/create">
+                            <span class="icon-text">
+                                <span class="icon">
+                                    <i class="fas fa-plus-circle"></i>
+                                </span>
+                                <span>New Issue</span>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+    </div>
+</nav>

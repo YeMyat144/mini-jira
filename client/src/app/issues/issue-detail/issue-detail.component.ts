@@ -10,11 +10,7 @@ import { User } from '../../models/user';
 
 @Component({
   selector: 'app-issue-detail',
-  template: `
-    <div *ngIf="isLoading" class="loading-spinner">
-      <p>Loading issue details...</p>
-    </div>`,
-  styleUrls: ['./issue-detail.component.css']
+  template: './issue-detail.component.html'
 })
 export class IssueDetailComponent implements OnInit {
   issue?: Issue;

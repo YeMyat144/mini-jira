@@ -1,85 +1,140 @@
-<div class="container-fluid mt-4">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2>Kanban Board</h2>
-    <div class="d-flex align-items-center">
-      <label for="projectSelect" class="me-2">Project:</label>
-      <select id="projectSelect" class="form-select" [(ngModel)]="selectedProjectId" (change)="onProjectChange()">
-        <option *ngFor="let project of projects" [value]="project.id">{{ project.name }}</option>
-      </select>
-      <button class="btn btn-primary ms-3" routerLink="/issues/create">
-        <i class="bi bi-plus-circle me-1"></i> New Issue
-      </button>
+<div class="container is-fluid mt-5">
+  <div class="level is-mobile mb-5">
+    <div class="level-left">
+      <h2 class="title is-2">Kanban Board</h2>
+    </div>
+    <div class="level-right">
+      <div class="field is-horizontal">
+        <div class="field-label is-normal">
+          <label class="label">Project:</label>
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control">
+              <div class="select">
+                <select [(ngModel)]="selectedProjectId" (change)="onProjectChange()">
+                  <option *ngFor="let project of projects" [value]="project.id">{{ project.name }}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <div class="control">
+              <a class="button is-primary" routerLink="/issues/create">
+                <span class="icon">
+                  <i class="fas fa-plus-circle"></i>
+                </span>
+                <span>New Issue</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div *ngIf="errorMessage" class="alert alert-danger">
+  <div *ngIf="errorMessage" class="notification is-danger is-light">
+    <button class="delete" (click)="errorMessage = ''"></button>
     {{ errorMessage }}
-    <button type="button" class="btn-close float-end" (click)="errorMessage = ''"></button>
   </div>
 
-  <div *ngIf="isLoading" class="d-flex justify-content-center my-5">
-    <div class="spinner-border text-primary" role="status">
-      <span class="visually-hidden">Loading...</span>
-    </div>
+  <div *ngIf="isLoading" class="has-text-centered my-6">
+    <span class="icon is-large">
+      <i class="fas fa-spinner fa-pulse fa-3x"></i>
+    </span>
+    <p class="mt-3">Loading Kanban board...</p>
   </div>
 
-  <div *ngIf="!isLoading && (!columns || columns.length === 0)" class="alert alert-info">
+  <div *ngIf="!isLoading && (!columns || columns.length === 0)" class="notification is-info">
+    <button class="delete"></button>
     No data available for the Kanban board. Please select a project or create issues.
   </div>
 
   <div *ngIf="!isLoading && columns && columns.length > 0" class="kanban-container">
-    <div class="kanban-board">
-      <div *ngFor="let column of columns" class="kanban-column">
-        <div class="kanban-column-header">
-          <h5>{{ column.name }}</h5>
-          <span class="badge bg-secondary">{{ column.issues.length }}</span>
-        </div>
-        
-        <div
-          class="kanban-column-content"
-          [id]="'column-' + column.id"
-          cdkDropList
-          [cdkDropListData]="column.issues"
-          [cdkDropListConnectedTo]="getConnectedLists()"
-          (cdkDropListDropped)="drop($event)"
-        >
-          <div 
-            *ngFor="let issue of column.issues" 
-            class="kanban-card" 
-            cdkDrag
-            [cdkDragData]="issue"
-            [routerLink]="['/issues', issue.id]"
+    <div class="columns is-mobile is-gapless">
+      <div *ngFor="let column of columns" class="column">
+        <div class="card">
+          <header class="card-header">
+            <p class="card-header-title">
+              {{ column.name }}
+            </p>
+            <span class="card-header-icon">
+              <span class="tag is-rounded is-info">{{ column.issues.length }}</span>
+            </span>
+          </header>
+          
+          <div
+            class="card-content kanban-column-content py-2"
+            [id]="'column-' + column.id"
+            cdkDropList
+            [cdkDropListData]="column.issues"
+            [cdkDropListConnectedTo]="getConnectedLists()"
+            (cdkDropListDropped)="drop($event)"
           >
-            <div class="kanban-card-header">
-              <div class="d-flex align-items-center">
-                <i [class]="getIssueTypeIcon(issue.issueType)" class="me-2"></i>
-                <span class="issue-key">{{ issue.project?.key }}-{{ issue.id }}</span>
+            <div 
+              *ngFor="let issue of column.issues" 
+              class="card mb-3 kanban-card" 
+              cdkDrag
+              [cdkDragData]="issue"
+              [routerLink]="['/issues', issue.id]"
+            >
+              <div class="card-content">
+                <div class="media">
+                  <div class="media-left">
+                    <span class="icon">
+                      <i [class]="getIssueTypeIcon(issue.issueType)"></i>
+                    </span>
+                  </div>
+                  <div class="media-content">
+                    <p class="is-size-7 has-text-grey">{{ issue.project?.key }}-{{ issue.id }}</p>
+                  </div>
+                  <div class="media-right">
+                    <span class="tag" [ngClass]="getPriorityClass(issue.priority)">
+                      {{ issue.priority }}
+                    </span>
+                  </div>
+                </div>
+                
+                <div class="content">
+                  <p class="has-text-weight-semibold">{{ issue.title }}</p>
+                  
+                  <div *ngIf="issue.assignee" class="is-flex is-align-items-center mt-2">
+                    <span class="icon is-small">
+                      <i class="fas fa-user-circle"></i>
+                    </span>
+                    <span class="is-size-7 ml-1">{{ issue.assignee.displayName }}</span>
+                  </div>
+                </div>
               </div>
-              <span class="badge" [ngClass]="getPriorityClass(issue.priority)">{{ issue.priority }}</span>
-            </div>
-            <div class="kanban-card-title">{{ issue.title }}</div>
-            <div class="kanban-card-footer">
-              <div *ngIf="issue.assignee" class="assignee">
-                <i class="bi bi-person-circle me-1"></i>
-                {{ issue.assignee.displayName }}
+              
+              <!-- Drag Preview (hidden) -->
+              <div *cdkDragPreview class="card kanban-card-preview">
+                <div class="card-content">
+                  <div class="media">
+                    <div class="media-left">
+                      <span class="icon">
+                        <i [class]="getIssueTypeIcon(issue.issueType)"></i>
+                      </span>
+                    </div>
+                    <div class="media-content">
+                      <p class="is-size-7 has-text-grey">{{ issue.project?.key }}-{{ issue.id }}</p>
+                    </div>
+                    <div class="media-right">
+                      <span class="tag" [ngClass]="getPriorityClass(issue.priority)">
+                        {{ issue.priority }}
+                      </span>
+                    </div>
+                  </div>
+                  <div class="content">
+                    <p class="has-text-weight-semibold">{{ issue.title }}</p>
+                  </div>
+                </div>
               </div>
             </div>
             
-            <!-- Drag Preview (hidden) -->
-            <div *cdkDragPreview class="kanban-card kanban-card-preview">
-              <div class="kanban-card-header">
-                <div class="d-flex align-items-center">
-                  <i [class]="getIssueTypeIcon(issue.issueType)" class="me-2"></i>
-                  <span class="issue-key">{{ issue.project?.key }}-{{ issue.id }}</span>
-                </div>
-                <span class="badge" [ngClass]="getPriorityClass(issue.priority)">{{ issue.priority }}</span>
-              </div>
-              <div class="kanban-card-title">{{ issue.title }}</div>
+            <div *ngIf="column.issues.length === 0" class="has-text-centered py-4">
+              <p class="has-text-grey-light">No issues</p>
             </div>
-          </div>
-          
-          <div *ngIf="column.issues.length === 0" class="empty-column">
-            <p class="text-muted">No issues</p>
           </div>
         </div>
       </div>
