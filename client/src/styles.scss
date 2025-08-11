@@ -1,1 +1,87 @@
 @use "bulma/bulma";
+
+// Futuristic neon theme variables
+:root {
+  --bg: #0b0f17;
+  --surface: #0f1624;
+  --text: #e6f1ff;
+  --muted: #7a8faa;
+  --primary: #00ffd1; // teal neon
+  --primary-weak: rgba(0, 255, 209, 0.25);
+  --accent: #6c5ce7; // purple
+}
+
+html, body {
+  background: radial-gradient(1200px 800px at 10% -10%, rgba(108, 92, 231, 0.25), transparent 60%),
+              radial-gradient(1200px 800px at 110% 10%, rgba(0, 255, 209, 0.15), transparent 60%),
+              var(--bg);
+  color: var(--text);
+  min-height: 100%;
+}
+
+.navbar.is-primary {
+  background: linear-gradient(90deg, rgba(15, 22, 36, 0.9), rgba(11, 15, 23, 0.9));
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--primary-weak);
+}
+
+.title, .card-header-title, .label {
+  color: var(--text);
+}
+
+.button.is-primary {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: #031015;
+  border: none;
+  text-shadow: 0 0 0.25rem rgba(255, 255, 255, 0.2);
+}
+
+.button.is-primary:hover {
+  filter: brightness(1.08);
+}
+
+.card {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0));
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35), inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+}
+
+.kanban-container {
+  padding-bottom: 1rem;
+}
+
+.kanban-column-content {
+  min-height: 50vh;
+  background: rgba(255, 255, 255, 0.02);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.kanban-card {
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.kanban-card:hover {
+  transform: translateY(-2px);
+}
+
+/* Accent tags */
+.tag.is-info, .bg-info { background-color: rgba(108, 92, 231, 0.2) !important; color: var(--text) !important; border: 1px solid rgba(108, 92, 231, 0.35); }
+.bg-warning { background-color: rgba(255, 193, 7, 0.2) !important; color: #ffd166 !important; border: 1px solid rgba(255, 193, 7, 0.4); }
+.bg-danger { background-color: rgba(220, 53, 69, 0.2) !important; color: #ff6b6b !important; border: 1px solid rgba(220, 53, 69, 0.4); }
+.bg-secondary { background-color: rgba(108, 117, 125, 0.2) !important; color: #b6c2cf !important; border: 1px solid rgba(108, 117, 125, 0.35); }
+
+/* Floating highlight ring utility */
+.fx-ring {
+  position: relative;
+}
+
+.fx-ring::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: 12px;
+  pointer-events: none;
+  box-shadow: 0 0 0 1px var(--primary-weak), 0 0 30px rgba(0, 255, 209, 0.1), inset 0 0 30px rgba(0, 255, 209, 0.06);
+}
+

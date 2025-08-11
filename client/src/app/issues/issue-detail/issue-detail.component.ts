@@ -10,7 +10,8 @@ import { User } from '../../models/user';
 
 @Component({
   selector: 'app-issue-detail',
-  template: './issue-detail.component.html'
+  templateUrl: './issue-detail.component.html',
+  standalone: true,
 })
 export class IssueDetailComponent implements OnInit {
   issue?: Issue;

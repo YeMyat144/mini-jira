@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavComponent } from './nav/nav.component';
+import { RevealDirective } from './directives/reveal.directive';
 
 @Component({
   selector: 'app-layout',
@@ -8,7 +9,7 @@ import { NavComponent } from './nav/nav.component';
   imports: [RouterOutlet, NavComponent],
   template: `
     <app-nav></app-nav>
-    <main class="section">
+    <main class="section" >
       <router-outlet />
     </main>
   `,

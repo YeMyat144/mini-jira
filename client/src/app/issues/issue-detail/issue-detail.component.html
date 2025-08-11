@@ -1,3 +1,81 @@
-<div *ngIf="isLoading" class="loading-spinner">
-    <p>Loading issue details...</p>
-</div>`,
+<div class="container mt-5" appReveal>
+  <div *ngIf="isLoading" class="has-text-centered my-6">
+    <span class="icon is-large">
+      <i class="fas fa-spinner fa-pulse fa-3x"></i>
+    </span>
+    <p class="mt-3">Loading issue details...</p>
+  </div>
+
+  <div *ngIf="!isLoading && issue" class="columns is-centered">
+    <div class="column is-10">
+      <div class="card fx-ring" appNeonHover>
+        <div class="card-header">
+          <p class="card-header-title is-size-4">
+            <span class="icon mr-2"><i [class]="getIssueTypeIcon(issue?.issueType)"></i></span>
+            {{ issue?.title }}
+          </p>
+          <div class="card-header-icon">
+            <span class="tag">{{ issue?.priority }}</span>
+          </div>
+        </div>
+        <div class="card-content">
+          <div class="content">
+            <p class="is-size-6 has-text-grey">{{ issue?.project?.key }}-{{ issue?.id }}</p>
+            <p class="mt-3">{{ issue?.description }}</p>
+
+            <div class="columns mt-4">
+              <div class="column">
+                <p class="has-text-grey">Assignee</p>
+                <p>{{ getUserName(issue?.assigneeId) }}</p>
+              </div>
+              <div class="column">
+                <p class="has-text-grey">Status</p>
+                <p>{{ issue?.issueStatus?.name }}</p>
+              </div>
+              <div class="column">
+                <p class="has-text-grey">Created</p>
+              </div>
+            </div>
+
+            <hr>
+
+            <h3 class="title is-5">Comments</h3>
+
+            <div *ngIf="issue.comments?.length; else noComments">
+              <div *ngFor="let comment of issue.comments" class="box" appReveal>
+                <p class="is-size-7 has-text-grey">{{ formatDate(comment.createdAt) }}</p>
+                <p class="mt-2">{{ comment.content }}</p>
+                <button class="button is-small is-danger mt-2" (click)="deleteComment(comment.id)">
+                  <span class="icon is-small"><i class="fas fa-trash"></i></span>
+                  <span>Delete</span>
+                </button>
+              </div>
+            </div>
+            <ng-template #noComments>
+              <p class="has-text-grey">No comments yet.</p>
+            </ng-template>
+
+            <form class="mt-4" (ngSubmit)="submitComment()">
+              <div class="field">
+                <label class="label">Add Comment</label>
+                <div class="control">
+                  <textarea class="textarea" formControlName="content" rows="3" placeholder="Write your comment..."></textarea>
+                </div>
+              </div>
+              <div class="field is-grouped">
+                <div class="control">
+                  <button class="button is-primary" type="submit" [class.is-loading]="isCommentLoading" [disabled]="commentForm.invalid">
+                    Add Comment
+                  </button>
+                </div>
+                <div class="control" *ngIf="commentErrorMessage">
+                  <p class="help is-danger">{{ commentErrorMessage }}</p>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

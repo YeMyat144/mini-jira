@@ -4,12 +4,14 @@ import { Project } from '../../models/project';
 import { ProjectService } from '../../services/project.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { RevealDirective } from '../../directives/reveal.directive';
+import { NeonHoverDirective } from '../../directives/neon-hover.directive';
 
 @Component({
   selector: 'app-project-list',
   templateUrl: './project-list.component.html',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule]
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, RevealDirective, NeonHoverDirective]
 })
 export class ProjectListComponent implements OnInit {
   projects: Project[] = [];

@@ -1,4 +1,4 @@
-<div class="container mt-5">
+<div class="container mt-5" >
     <div class="level">
         <div class="level-left">
             <div class="level-item">
@@ -103,15 +103,11 @@
         {{ errorMessage }}
     </div>
 
-    <!-- No Issues State -->
-    <div *ngIf="!isLoading && !errorMessage && issues.length === 0" class="notification is-info">
-        <p>No issues found. <a routerLink="/issues/create" class="has-text-weight-bold">Create your first issue</a></p>
-    </div>
-
+  
     <!-- Issues List -->
     <div class="columns is-multiline" *ngIf="!isLoading && issues.length > 0">
-        <div class="column is-one-third" *ngFor="let issue of issues">
-            <div class="card">
+        <div class="column is-one-third" *ngFor="let issue of issues" >
+            <div class="card fx-ring" appNeonHover>
                 <div class="card-header">
                     <p class="card-header-title">
                         <span *ngIf="issue.issueType" class="icon mr-2" [title]="issue.issueType.name">

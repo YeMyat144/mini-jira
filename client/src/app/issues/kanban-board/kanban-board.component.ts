@@ -7,6 +7,8 @@ import { Issue } from '../../models/issue';
 import { Project } from '../../models/project';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RevealDirective } from '../../directives/reveal.directive';
+import { NeonHoverDirective } from '../../directives/neon-hover.directive';
 
 interface KanbanColumn {
   id: number;
@@ -19,7 +21,7 @@ interface KanbanColumn {
   selector: 'app-kanban-board',
   templateUrl: './kanban-board.component.html',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, DragDropModule]
+  imports: [CommonModule, FormsModule, RouterModule, DragDropModule, RevealDirective, NeonHoverDirective]
 })
 export class KanbanBoardComponent implements OnInit {
   columns: KanbanColumn[] = [];

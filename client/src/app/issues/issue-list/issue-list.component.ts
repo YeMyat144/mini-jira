@@ -14,11 +14,13 @@ import { User } from '../../models/user';
 import { IssueType } from '../../models/issue-type';
 import { IssueStatus } from '../../models/issue-status';
 import { forkJoin } from 'rxjs';
+import { RevealDirective } from '../../directives/reveal.directive';
+import { NeonHoverDirective } from '../../directives/neon-hover.directive';
 
 @Component({
   selector: 'app-issue-list',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, RevealDirective, NeonHoverDirective],
   templateUrl: './issue-list.component.html',
 })
 export class IssueListComponent implements OnInit {
